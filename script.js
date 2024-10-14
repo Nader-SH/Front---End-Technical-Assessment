@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded',  () => {
 
     fetch('data.json')
         .then(response => response.json())
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // function to create a slide element
-function createSlideElement(slide) {
+const createSlideElement = (slide) => {
     const slideDiv = document.createElement('div');
     slideDiv.classList.add('slide');
 
@@ -38,7 +38,7 @@ function createSlideElement(slide) {
 }
 
 // function to initialize each slider
-function initializeSlider(sliderId, intervalTime) {
+const initializeSlider = (sliderId, intervalTime) => {
     let slider = document.getElementById(sliderId);
     let slides = slider.querySelector('.slides');
     let slidesCount = slides.children.length;
@@ -82,7 +82,7 @@ function initializeSlider(sliderId, intervalTime) {
         }
     };
 
-    function updateSlider(id, i) {
+    const updateSlider = (id, i) => {
         let s = document.getElementById(id).querySelector('.slides');
         s.style.transform = `translateX(${-i * 100}%)`;
         updateDots(id, i);

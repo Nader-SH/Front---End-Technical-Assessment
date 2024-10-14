@@ -203,7 +203,7 @@ img {
 }
 
 .arrow {
-    transform: translateY(-50%);
+    background-color: #f4f4f4;
     color: #0056b3;
     border: none;
     cursor: pointer;

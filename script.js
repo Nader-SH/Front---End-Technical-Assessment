@@ -1,38 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const slidesData = [
-        {
-            description: "“As a full stack developer with experience in building web applications using technologies such as Node.js, React, and Express”",
-            image: "./assest/image.jpg",
-            name: "John Doe",
-            jobTitle: "Software Engineer"
-        },
-        {
-            description: "“Experienced in full-stack development, I excel in using JavaScript frameworks and managing RESTful services with Node.js”",
-            image: "./assest/image1.jpg",
-            name: "Jane Smith",
-            jobTitle: "Development Team Leader"
-        },
-        {
-            description: "“With a strong foundation in Java, I have a proven track record of delivering scalable applications and working with SQL databases”",
-            image: "./assest/image2.jpg",
-            name: "Nader Shakshak",
-            jobTitle: "Software Engineer"
-        },
-        {
-            description: "“With a strong foundation in Java, I have a proven track record of delivering scalable applications and working with SQL databases”",
-            image: "./assest/image3.jpg",
-            name: "mark jops",
-            jobTitle: "Software Engineer"
-        }
-    ];
 
-    const slidesContainer = document.getElementById('slidesContainer');
-    slidesData.forEach(slide => {
-        const slideElement = createSlideElement(slide);
-        slidesContainer.appendChild(slideElement);
-    });
-
-    initializeSlider('slider2', 5000);
+    fetch('data.json')
+        .then(response => response.json())
+        .then(slidesData => {
+            const slidesContainer = document.getElementById('slidesContainer');
+            slidesData.forEach(slide => {
+                const slideElement = createSlideElement(slide);
+                slidesContainer.appendChild(slideElement);
+            });
+        
+            initializeSlider('slider2', 5000, slidesData);
+            
+        })
+        .catch(error => console.error('Error fetching data:', error));
 });
 
 // function to create a slide element

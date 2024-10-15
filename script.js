@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Initialize Service Slider
 const initializeServiceSlider = () => {
-    fetch('services.json')
+    fetch('./json/services.json')
         .then(response => response.json())
         .then(slidesData => {
             populateSlides('slidesContainer1', slidesData, createServiceSlideElement);
@@ -16,7 +16,7 @@ const initializeServiceSlider = () => {
 
 // Initialize Team Slider Data
 const initializeTeamSlider = () => {
-    fetch('team.json')
+    fetch('./json/team.json')
         .then(response => response.json())
         .then(slidesData => {
             populateSlides('slidesContainer2', slidesData, createTeamSlideElement);
@@ -140,7 +140,7 @@ const initializeSlider = (sliderId, intervalTime) => {
     window[sliderId + '_nextSlide'] = nextSlide;
 };
 
-// Attach arrow button events outside of the initializeSlider
+// arrow button events outside 
 const setupArrowButtons = () => {
     document.querySelectorAll('.arrow.prev').forEach(button => {
         const sliderId = button.closest('.container').querySelector('.slider').id;
@@ -157,5 +157,4 @@ const setupArrowButtons = () => {
     });
 };
 
-// Call this function after initializing sliders
 setupArrowButtons();

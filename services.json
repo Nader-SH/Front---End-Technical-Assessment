@@ -1,0 +1,32 @@
+[
+  {
+    "service": "Full Stack Web Development",
+    "description": "I build responsive, scalable web applications using modern technologies like React, Node.js, Express, and MongoDB.",
+    "image": "./assest/FullStackWebDevelopment.jpg"
+  },
+  {
+    "service": "Frontend Development",
+    "description": "I specialize in crafting dynamic, user-friendly interfaces with React, HTML, CSS, and JavaScript frameworks.",
+    "image": "./assest/FrontendDevelopment.jpg"
+  },
+  {
+    "service": "Backend Development",
+    "description": "I design and implement RESTful APIs and handle server-side logic using Node.js, Express, and database management systems like SQL and MongoDB.",
+    "image": "./assest/BackendDevelopment.jpg"
+  },
+  {
+    "service": "API Integration",
+    "description": "I provide seamless integration of third-party APIs to enhance application functionality, from payment gateways to social media services.",
+    "image": "./assest/APIIntegration.jpg"
+  },
+  {
+    "service": "Database Design & Management",
+    "description": "I create and manage databases, ensuring data integrity and optimization with SQL, MongoDB, and other database systems.",
+    "image": "./assest/DatabaseDesign&Management.jpg"
+  },
+  {
+    "service": "Technical Consultation",
+    "description": "I offer expert advice on software architecture, code reviews, and technology stack decisions to ensure the best performance and scalability.",
+    "image": "./assest/TechnicalConsultation.jpg"
+  }
+]

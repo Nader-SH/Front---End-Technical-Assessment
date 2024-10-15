@@ -1,98 +1,161 @@
-document.addEventListener('DOMContentLoaded',  () => {
-
-    fetch('data.json')
-        .then(response => response.json())
-        .then(slidesData => {
-            const slidesContainer = document.getElementById('slidesContainer');
-            slidesData.forEach(slide => {
-                const slideElement = createSlideElement(slide);
-                slidesContainer.appendChild(slideElement);
-            });
-        
-            initializeSlider('slider2', 5000, slidesData);
-            
-        })
-        .catch(error => console.error('Error fetching data:', error));
+document.addEventListener('DOMContentLoaded', () => {
+    initializeServiceSlider();
+    initializeTeamSlider();
 });
 
-// function to create a slide element
-const createSlideElement = (slide) => {
+// Initialize Service Slider
+const initializeServiceSlider = () => {
+    fetch('services.json')
+        .then(response => response.json())
+        .then(slidesData => {
+            populateSlides('slidesContainer1', slidesData, createServiceSlideElement);
+            initializeSlider('slider1', 4000);
+        })
+        .catch(error => console.error('Error fetching services data:', error));
+};
+
+// Initialize Team Slider Data
+const initializeTeamSlider = () => {
+    fetch('team.json')
+        .then(response => response.json())
+        .then(slidesData => {
+            populateSlides('slidesContainer2', slidesData, createTeamSlideElement);
+            initializeSlider('slider2', 5000);
+        })
+        .catch(error => console.error('Error fetching team data:', error));
+};
+
+// Function to populate slides in the container
+const populateSlides = (containerId, slidesData, createSlideElement) => {
+    const slidesContainer = document.getElementById(containerId);
+    slidesData.forEach(slide => {
+        const slideElement = createSlideElement(slide);
+        slidesContainer.appendChild(slideElement);
+    });
+};
+
+// Function to create a service slide element
+const createServiceSlideElement = (slide) => {
     const slideDiv = document.createElement('div');
     slideDiv.classList.add('slide');
+    slideDiv.innerHTML = `
+        <div class="service-slide">
+            <div class="imageDiv">
+                <img src="${slide.image}" class="serviceImg" alt="${slide.service}" />
+            </div>
+            <div class="text-container">
+                <h3 class="service-name">${slide.service}</h3>
+                <p class="description">${slide.description}</p>
+                <button class="cv-button">Learn More</button>
+            </div>
+        </div>`;
+    return slideDiv;
+};
 
+// Function to create a team slide element
+const createTeamSlideElement = (slide) => {
+    const slideDiv = document.createElement('div');
+    slideDiv.classList.add('slide');
     slideDiv.innerHTML = `
         <div>
             <p class="description">${slide.description}</p>
         </div>
         <div class="imageDiv">
-            <img src="${slide.image}" alt="${slide.name}" />
+            <img src="${slide.image}" class="teamImg" alt="${slide.name}" />
         </div>
         <div class="text-container">
             <h3 class="employee-name">${slide.name}</h3>
             <p class="job-title">${slide.jobTitle}</p>
             <button class="cv-button">View CV Sample</button>
-        </div>
-    `;
-
+        </div>`;
     return slideDiv;
-}
+};
 
-// function to initialize each slider
+// Function to initialize each slider
 const initializeSlider = (sliderId, intervalTime) => {
-    let slider = document.getElementById(sliderId);
-    let slides = slider.querySelector('.slides');
-    let slidesCount = slides.children.length;
-    let dotsContainer = document.getElementById('dots' + sliderId.slice(-1));
     let index = 0;
+    const slider = document.getElementById(sliderId);
+    const slides = slider.querySelector('.slides');
+    const slidesCount = slides.children.length;
+    const dotsContainer = document.getElementById('dots' + sliderId.slice(-1));
     let autoPlay;
 
-    // create dots and set active dot
-    for (let i = 0; i < slidesCount; i++) {
-        let dot = document.createElement('div');
-        dot.classList.add('dot');
-        dot.addEventListener('click', () => goToSlide(sliderId, i));
-        dotsContainer.appendChild(dot);
-    }
-    updateDots(sliderId, index);
-
-    // auto play functionality
-    autoPlay = setInterval(() => nextSlide(sliderId), intervalTime);
-
-    // go to the next slide
-    window.nextSlide = (id) => {
-        if (id === sliderId) {
-            index = (index + 1) % slidesCount;
-            updateSlider(sliderId, index);
+    const createDots = () => {
+        for (let i = 0; i < slidesCount; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+                resetTimer();
+            });
+            dotsContainer.appendChild(dot);
         }
     };
 
-    // go to the previous slide
-    window.prevSlide = (id) => {
-        if (id === sliderId) {
-            index = (index - 1 + slidesCount) % slidesCount;
-            updateSlider(sliderId, index);
-        }
+    const resetTimer = () => {
+        clearInterval(autoPlay);
+        autoPlay = setInterval(nextSlide, intervalTime);
     };
 
-    // go to specific slide
-    window.goToSlide = (id, i) => {
-        if (id === sliderId) {
-            index = i;
-            updateSlider(sliderId, index);
-        }
+    const nextSlide = () => {
+        index = (index + 1) % slidesCount;
+        updateSlider(index);
+        resetTimer();
     };
 
-    const updateSlider = (id, i) => {
-        let s = document.getElementById(id).querySelector('.slides');
-        s.style.transform = `translateX(${-i * 100}%)`;
-        updateDots(id, i);
-    }
+    const prevSlide = () => {
+        index = (index - 1 + slidesCount) % slidesCount;
+        updateSlider(index);
+        resetTimer();
+    };
 
-    function updateDots(id, i) {
-        let dots = document.getElementById('dots' + id.slice(-1)).children;
+    const goToSlide = (i) => {
+        index = i;
+        updateSlider(index);
+        resetTimer();
+    };
+
+    const updateSlider = (i) => {
+        console.log("Current slider:", sliderId, "Slide index:", i);
+        slides.style.transform = `translateX(${-i * 100}%)`;
+        updateDots(i);
+        resetTimer();
+    };
+
+    const updateDots = (i) => {
+        const dots = dotsContainer.children;
         for (let j = 0; j < dots.length; j++) {
             dots[j].classList.remove('active');
         }
         dots[i].classList.add('active');
-    }
-}
+    };
+
+    // Initialize dots and set active dot
+    createDots();
+    updateDots(index);
+    autoPlay = setInterval(nextSlide, intervalTime);
+
+    // Attach the prevSlide and nextSlide functions to the window object
+    window[sliderId + '_prevSlide'] = prevSlide;
+    window[sliderId + '_nextSlide'] = nextSlide;
+};
+
+// Attach arrow button events outside of the initializeSlider
+const setupArrowButtons = () => {
+    document.querySelectorAll('.arrow.prev').forEach(button => {
+        const sliderId = button.closest('.container').querySelector('.slider').id;
+        button.addEventListener('click', () => {
+            window[sliderId + '_prevSlide']();
+        });
+    });
+
+    document.querySelectorAll('.arrow.next').forEach(button => {
+        const sliderId = button.closest('.container').querySelector('.slider').id;
+        button.addEventListener('click', () => {
+            window[sliderId + '_nextSlide']();
+        });
+    });
+};
+
+// Call this function after initializing sliders
+setupArrowButtons();

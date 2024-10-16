@@ -169,7 +169,7 @@ header nav ul li a:hover {
 
 .slides {
     display: flex;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s ease-in-out;
 }
 
 .slide {

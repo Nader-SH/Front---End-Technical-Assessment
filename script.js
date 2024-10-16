@@ -91,7 +91,7 @@ const initializeSlider = (sliderId, intervalTime) => {
             dotsContainer.appendChild(dot);
         }
     };
-
+    
     const resetTimer = () => {
         clearInterval(autoPlay);
         autoPlay = setInterval(nextSlide, intervalTime);
@@ -100,19 +100,16 @@ const initializeSlider = (sliderId, intervalTime) => {
     const nextSlide = () => {
         index = (index + 1) % slidesCount;
         updateSlider(index);
-        resetTimer();
     };
 
     const prevSlide = () => {
         index = (index - 1 + slidesCount) % slidesCount;
         updateSlider(index);
-        resetTimer();
     };
 
     const goToSlide = (i) => {
         index = i;
         updateSlider(index);
-        resetTimer();
     };
 
     const updateSlider = (i) => {
@@ -152,7 +149,9 @@ const setupArrowButtons = () => {
     document.querySelectorAll('.arrow.next').forEach(button => {
         const sliderId = button.closest('.container').querySelector('.slider').id;
         button.addEventListener('click', () => {
+            // Utilize the functions that have been added to the window object
             window[sliderId + '_nextSlide']();
+            
         });
     });
 };

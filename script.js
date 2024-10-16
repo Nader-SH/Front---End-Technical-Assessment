@@ -80,52 +80,60 @@ const initializeSlider = (sliderId, intervalTime) => {
     const dotsContainer = document.getElementById('dots' + sliderId.slice(-1));
     let autoPlay;
 
-    const createDots = () => {
-        for (let i = 0; i < slidesCount; i++) {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            dot.addEventListener('click', () => {
-                goToSlide(i);
-                resetTimer();
-            });
-            dotsContainer.appendChild(dot);
-        }
-    };
-    
-    const resetTimer = () => {
-        clearInterval(autoPlay);
-        autoPlay = setInterval(nextSlide, intervalTime);
-    };
+// Function to dynamically create dots for the slider navigation
+const createDots = () => {
+    for (let i = 0; i < slidesCount; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.addEventListener('click', () => {
+            goToSlide(i);
+            resetTimer();
+        });
+        dotsContainer.appendChild(dot);
+    }
+};
 
-    const nextSlide = () => {
-        index = (index + 1) % slidesCount;
-        updateSlider(index);
-    };
+// Function to reset the autoplay timer and restart the interval
+const resetTimer = () => {
+    clearInterval(autoPlay);
+    autoPlay = setInterval(nextSlide, intervalTime);
+};
 
-    const prevSlide = () => {
-        index = (index - 1 + slidesCount) % slidesCount;
-        updateSlider(index);
-    };
+// Function to move to the next slide in the sequence
+const nextSlide = () => {
+    index = (index + 1) % slidesCount;
+    updateSlider(index);
+};
 
-    const goToSlide = (i) => {
-        index = i;
-        updateSlider(index);
-    };
+// Function to move to the previous slide in the sequence
+const prevSlide = () => {
+    index = (index - 1 + slidesCount) % slidesCount;
+    updateSlider(index);
+};
 
-    const updateSlider = (i) => {
-        console.log("Current slider:", sliderId, "Slide index:", i);
-        slides.style.transform = `translateX(${-i * 100}%)`;
-        updateDots(i);
-        resetTimer();
-    };
+// Function to go to a specific slide based on the provided index
+const goToSlide = (i) => {
+    index = i;
+    updateSlider(index);
+};
 
-    const updateDots = (i) => {
-        const dots = dotsContainer.children;
-        for (let j = 0; j < dots.length; j++) {
-            dots[j].classList.remove('active');
-        }
-        dots[i].classList.add('active');
-    };
+// Function to update the slider's position and reset the timer
+const updateSlider = (i) => {
+    // console.log("Current slider:", sliderId, "Slide index:", i);
+    slides.style.transform = `translateX(${-i * 100}%)`;
+    updateDots(i);
+    resetTimer();
+};
+
+// Function to visually update the dots to reflect the current slide
+const updateDots = (i) => {
+    const dots = dotsContainer.children;
+    for (let j = 0; j < dots.length; j++) {
+        dots[j].classList.remove('active');
+    }
+    dots[i].classList.add('active');
+};
+
 
     // Initialize dots and set active dot
     createDots();
